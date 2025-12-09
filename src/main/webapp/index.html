@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 7 - Bài 1 - AJAX JSON</title>
+    <script>
+        // Gọi API khi trang load xong
+        window.onload = function() {
+            fetch('api/nhanvien')  // đường dẫn servlet
+                .then(response => {
+                    if (!response.ok) throw new Error('Lỗi mạng');
+                    return response.json();
+                })
+                .then(data => {
+                    // In ra console đúng như đề yêu cầu
+                    console.log("Dữ liệu nhận được từ server:");
+                    console.log(data);
+                    console.log("Mã NV:", data.manv);
+                    console.log("Họ tên:", data.hoTen);
+                    console.log("Giới tính:", data.gioiTinh ? "Nam" : "Nữ");
+                    console.log("Lương:", data.luong);
+
+                    // (Tùy chọn) Hiển thị lên trang cho đẹp
+                    document.getElementById("result").innerHTML = `
+                        <div class="alert alert-success">
+                            <strong>Thành công!</strong><br>
+                            Mã NV: ${data.manv}<br>
+                            Họ tên: ${data.hoTen}<br>
+                            Giới tính: ${data.gioiTinh ? "Nam" : "Nữ"}<br>
+                            Lương: ${data.luong.toLocaleString()} VND
+                        </div>
+                    `;
+                })
+                .catch(err => console.error("Lỗi:", err));
+        };
+    </script>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>LAB 7 - BÀI 1: AJAX + JSON</h3>
+        </div>
+        <div class="card-body">
+            <p>Mở <strong>F12 → Console</strong> để xem kết quả JSON từ server.</p>
+            <div id="result" class="mt-4"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
